@@ -1,0 +1,8 @@
+server:
+  port: 8083
+
+# OCR Configuration
+ocr:
+  tessdata-path: C:/Users/Najib/Desktop/e_voting_v2/Tess4J/tessdata # Windows path where trained data is stored
+  language: eng # or fra/ara depending on CIN language
+  confidence-threshold: 70

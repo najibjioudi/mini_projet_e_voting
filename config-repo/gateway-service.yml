@@ -1,0 +1,59 @@
+server:
+  port: 8080
+
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+      default-filters:
+        - Authentication
+      routes:
+        - id: auth-service
+          uri: lb://AUTH-SERVICE
+          predicates:
+            - Path=/auth/**
+          # Filter removed to preserve /auth prefix for downstream service
+        - id: voter-service
+          uri: lb://VOTER-SERVICE
+          predicates:
+            - Path=/voter/**
+          # Filter removed to match Controller Mapping /voter/register
+        - id: ocr-service
+          uri: lb://OCR-SERVICE
+          predicates:
+            - Path=/ocr/**
+          # Filter removed to match Controller Mapping /ocr/verify
+        - id: admin-service
+          uri: lb://ADMIN-SERVICE
+          predicates:
+            - Path=/admin/**
+        - id: elector-service
+          uri: lb://ELECTOR-SERVICE
+          predicates:
+            - Path=/elector/**
+        - id: election-service
+          uri: lb://ELECTION-SERVICE
+          predicates:
+            - Path=/election/**
+        - id: vote-service
+          uri: lb://VOTE-SERVICE
+          predicates:
+            - Path=/vote/**
+        - id: result-service
+          uri: lb://RESULT-SERVICE
+          predicates:
+            - Path=/result/**
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
